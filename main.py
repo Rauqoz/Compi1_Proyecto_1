@@ -17,7 +17,7 @@ def salir():
 
 tag1 = "palabra_Reservada"
 #Text Area
-codigo = st.ScrolledText(root,width = 70,height = 25) 
+codigo = st.ScrolledText(root,width = 70,height = 25 , bg = "light blue") 
 codigo.grid(column = 0,row =1, pady = 20, padx = 10) 
 # Texto y Colores
 # codigo.insert(INSERT, "Ehila \n", "'" + tag1 + "'")
@@ -25,10 +25,8 @@ codigo.grid(column = 0,row =1, pady = 20, padx = 10)
 
 
 #Text Area
-errores = st.ScrolledText(root,width = 70,height = 25) 
+errores = st.ScrolledText(root,width = 70,height = 25,bg = "black") 
 errores.grid(column = 1,row =1, pady = 20, padx = 10) 
-errores.insert(INSERT,"hola","p")
-errores.tag_config("p", foreground='red')
 
 
 # Making the text read only 
@@ -36,14 +34,14 @@ errores.tag_config("p", foreground='red')
 # errores.configure(state ='disabled')  
 
 def _abrir():
-    abrir.abrir(codigo)
+    abrir.abrir(codigo,errores)
     if abrir.archivo != "":
         ms.showinfo(message="Archivo Cargado",title="Analisis Listo")
 
 
 def _analisis():
     if abrir.archivo != "":
-        abrir.analisis(codigo)
+        abrir.analisis(codigo,errores)
     else:
         ms.showinfo(message="Primer Abre un Archivo",title="Advertencia")
 

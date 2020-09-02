@@ -2,8 +2,10 @@ from tkinter import *
 from tkinter.filedialog import askopenfilename
 import tkinter.scrolledtext as st 
 import lexicoJavascript
+import subprocess
 
 archivo = ""
+extension_archivo = ""
 
 def abrir(codigo,errores_t):
     codigo.delete(1.0,END)
@@ -13,29 +15,28 @@ def abrir(codigo,errores_t):
     root.update()
     pathString = askopenfilename(filetypes=[("Archivos","*")])
     if pathString:
-        global archivo
+        global archivo, extension_archivo
         archivo = open(pathString, 'r')
         #extension
         split_extension = archivo.name.split(".")
         extension_archivo = split_extension[1]
-        lexicoJavascript.extension = extension_archivo
-        print("extension del archivo = " + extension_archivo)
         #leer lineas
         lexicoJavascript.primer_analisis()
         # lexicoJavascript.imprimir()
     root.destroy()
 
 def analisis(codigo,errores_t):
-    global archivo
+    global archivo, extension_archivo
     while (True):
         linea = archivo.readline().lower()
         if not linea:
             break
-        if lexicoJavascript.extension == "js":
+        if extension_archivo == "js":
             lexicoJavascript.lexicoJavascript(linea)
     archivo.close()
     archivo = ""
-    pintar_js(codigo,errores_t)
+    if extension_archivo == "js":
+        pintar_js(codigo,errores_t)
 
 def pintar_js(codigo,errores_t):
     if len(lexicoJavascript.tokens) != 0:
@@ -55,3 +56,70 @@ def pintar_js(codigo,errores_t):
         for x in lexicoJavascript.errores:
             errores_t.insert(INSERT, x.palabra + "\t" + str(x.fila) + "\t" + str(x.columna) + "\n", "normal")
             errores_t.tag_config("normal", foreground="white") 
+   
+
+def crear_dot():
+    if extension_archivo == "js":
+        itera = 0
+        while itera < 2:
+            rutaA = lexicoJavascript.tokens[itera].palabra.split(":")
+            rutaB = rutaA[1].split("/")
+            print(rutaB)
+            break
+        rutaC = ""
+        for x in rutaB:
+            if x == "user":
+                rutaC += "/"
+                rutaC += "rau"
+            elif x.isspace():
+                pass
+            else:
+                rutaC += "/"
+                rutaC += x
+        rutaC+="graficoJs.dot"
+        print(rutaC)
+        with open(rutaC,'w') as file:
+            file.write("digraph G {\n")
+            file.write("node [shape=circle, color=yellow]\n")
+            if lexicoJavascript.eA == True:
+                file.write("A\n")
+                pass
+            if lexicoJavascript.eB == True:
+                file.write("A -> B [label = L]\n")
+                file.write("B -> B [label = \"L|N\"]\n")
+                pass
+            if lexicoJavascript.eD == True:
+                file.write("A -> D [label = N]\n")
+                file.write("D -> D [label = N]\n")
+                pass
+            if lexicoJavascript.eG == True:
+                file.write("D -> G [label = S]\n")
+                pass
+            if lexicoJavascript.eH == True and lexicoJavascript.eG == True:
+                file.write("G -> H [label = N]\n")
+                pass
+            if lexicoJavascript.eC == True:
+                file.write("A -> C [label = S]\n")
+                pass
+            if lexicoJavascript.eE == True:
+                file.write("C -> E [label = \"L|N\"]\n")
+                file.write("E -> E [label = \"L|N\"]\n")
+                pass
+            if lexicoJavascript.eH == True and lexicoJavascript.eE == True:
+                file.write("E -> H [label = S]\n")
+                pass
+            if lexicoJavascript.eF == True:
+                file.write("C -> F [label = S]\n")
+                pass
+            if lexicoJavascript.eI == True:
+                file.write("F -> I [label = \"L|N|S\"]\n")
+                file.write("I -> I [label = \"L|N|S\"]\n")
+                pass
+            if lexicoJavascript.eJ == True:
+                file.write("I -> J [label = S]\n")
+                pass
+            if lexicoJavascript.eH == True and lexicoJavascript.eJ == True:
+                file.write("J -> H [label = S]\n")
+                pass
+            file.write("}")
+    # subprocess.call('dot -Tpng graficoJs.dot -o graficoJs.png', shell=True)

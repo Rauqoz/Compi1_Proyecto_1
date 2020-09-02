@@ -6,7 +6,7 @@ import abrir
 root = Tk()
 root.config(bg="gray")
 root.title("ML WEB")
-root.geometry('1055x415')
+root.geometry('940x415')
 
 # btn = Button(root, text="Click Me", command=clicked)
 # btn.grid(column=2, row=0)
@@ -23,11 +23,9 @@ codigo.grid(column = 0,row =1, pady = 20, padx = 10)
 # codigo.insert(INSERT, "Ehila \n", "'" + tag1 + "'")
 # codigo.tag_config("'" + tag1 + "'", foreground='orange') 
 
-
 #Text Area
-errores = st.ScrolledText(root,width = 70,height = 25,bg = "black") 
+errores = st.ScrolledText(root,width = 50,height = 25,bg = "black") 
 errores.grid(column = 1,row =1, pady = 20, padx = 10) 
-
 
 # Making the text read only 
 # codigo.configure(state ='disabled')  
@@ -38,13 +36,11 @@ def _abrir():
     if abrir.archivo != "":
         ms.showinfo(message="Archivo Cargado",title="Analisis Listo")
 
-
 def _analisis():
     if abrir.archivo != "":
         abrir.analisis(codigo,errores)
     else:
         ms.showinfo(message="Primer Abre un Archivo",title="Advertencia")
-
 
 menubar = Menu(root,bg="black",fg="white")
 root.config(menu=menubar)

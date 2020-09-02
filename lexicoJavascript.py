@@ -9,6 +9,16 @@ class error:
         self.fila = fila
         self.columna = columna
 
+eA = False
+eB = False
+eC = False
+eD = False
+eE = False
+eF = False
+eG = False
+eH = False
+eI = False
+eJ = False
 extension = ""
 char = []
 tokens = []
@@ -26,7 +36,7 @@ palabrasReservadas = ["var","true","false","if","else","for","break","while","do
 signos = ["/","*","=","\"","'",";",".",",","<",">","+","-","(",")","{","}","&","!","|","\\",":"]
 
 def primer_analisis():
-    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal
+    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal,eA,eB,eC,eD,eE,eF,eG,eH,eI,eJ
     char = []
     tokens = []
     errores = []
@@ -37,7 +47,7 @@ def primer_analisis():
     estado = 'A'
     
 def reservadas_buscar():
-    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal
+    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal,eA,eB,eC,eD,eE,eF,eG,eH,eI,eJ
     esReservada = False
     for x  in palabrasReservadas:
         if palabra == x:
@@ -52,16 +62,16 @@ def reservadas_buscar():
         palabra = ""
 
 def errores_buscar():
-    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal
+    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal,eA,eB,eC,eD,eE,eF,eG,eH,eI,eJ
     errores.append(error(char[i],fila,columna))
     palabra = ""
 
 def vacios():
-    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal
+    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal,eA,eB,eC,eD,eE,eF,eG,eH,eI,eJ
     tokens.append(lexema(char[i],"espacio"))
 
 def signos_buscar():
-    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal
+    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal,eA,eB,eC,eD,eE,eF,eG,eH,eI,eJ
     esSigno = False
     # print("buscando signo")
     for x  in signos:
@@ -78,8 +88,9 @@ def signos_buscar():
         palabra = ""
 
 def esta_A():
-    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal
+    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal,eA,eB,eC,eD,eE,eF,eG,eH,eI,eJ
     # print("estado A")
+    eA = True
     if char[i].isalpha():
         # print("letra")
         i-=1
@@ -97,6 +108,7 @@ def esta_A():
         vacios()
         estado = 'A'
     elif char[i] == '\'' or char[i] == '\"':
+        # print(char[i])
         palabra += char[i]
         estado = 'C'
         cadena_caracter = True
@@ -109,8 +121,9 @@ def esta_A():
         estado = 'A'
 
 def esta_B():
-    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal
+    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal,eA,eB,eC,eD,eE,eF,eG,eH,eI,eJ
     # print("estado B")
+    eB = True
     if char[i].isalpha() or char[i].isnumeric():
         palabra += char[i]
         estado = 'B'
@@ -129,11 +142,23 @@ def esta_B():
         estado = 'A'
 
 def esta_C():
-    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal
+    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal,eA,eB,eC,eD,eE,eF,eG,eH,eI,eJ
     # print("estado C")
+    eC = True
     if cadena_caracter == True:
-        palabra += char[i]
-        estado = 'E'
+        if char[i] != '\'' and char[i] != '\"':
+            # print("b")
+            palabra += char[i]
+            estado = 'E'
+        if char[i] == '\'' or char[i] == '\"':
+            # print("a")
+            i-=1
+            signos_buscar()
+            i+=1
+            signos_buscar()
+            estado = 'A'
+            palabra = ""
+            cadena_caracter = False
     elif char[i] == '*' :
         multilinea = True
         palabra += char[i]
@@ -153,7 +178,8 @@ def esta_C():
         comentario = False
 
 def esta_D():
-    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal
+    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal,eA,eB,eC,eD,eE,eF,eG,eH,eI,eJ
+    eD = True
     if char[i].isnumeric():
         palabra += char[i]
     elif char[i] == '.':
@@ -169,7 +195,8 @@ def esta_D():
     pass
 
 def esta_E():
-    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal
+    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal,eA,eB,eC,eD,eE,eF,eG,eH,eI,eJ
+    eE = True
     if char[i] == '\'' or char[i] == '\"':
         i-=1
         estado = 'H'
@@ -177,19 +204,22 @@ def esta_E():
         palabra += char[i]
 
 def esta_F():
-    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal
+    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal,eA,eB,eC,eD,eE,eF,eG,eH,eI,eJ
+    eF = True
     palabra += char[i]
     estado = 'I'
     pass
 
 def esta_G():
-    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal
+    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal,eA,eB,eC,eD,eE,eF,eG,eH,eI,eJ
+    eG = True
     palabra += char[i]
     estado = 'H'
     pass
 
 def esta_H():
-    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal
+    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal,eA,eB,eC,eD,eE,eF,eG,eH,eI,eJ
+    eH = True
     if char[i] == '\'':
         palabra += char[i]
         tokens.append(lexema(palabra,"caracter"))
@@ -224,8 +254,9 @@ def esta_H():
     pass
 
 def esta_I():
-    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal
-    if char[i] == '*':
+    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal,eA,eB,eC,eD,eE,eF,eG,eH,eI,eJ
+    eI = True
+    if char[i] == '*' and char[i+1] == '/':
         palabra += char[i]
         estado = 'J'
     elif char[i] == "\n" and multilinea == False:
@@ -240,14 +271,15 @@ def esta_I():
     pass
 
 def esta_J():
-    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal
+    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal,eA,eB,eC,eD,eE,eF,eG,eH,eI,eJ
+    eJ = True
     if char[i] == '/':
         palabra += char[i]
         estado = 'H'
     pass
 
 def lexicoJavascript(linea):
-    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal
+    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal,eA,eB,eC,eD,eE,eF,eG,eH,eI,eJ
     char = list(linea)
     tamaño = len(char)
     columna = 0
@@ -290,7 +322,7 @@ def lexicoJavascript(linea):
 
 
 def imprimir():
-    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal
+    global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal,eA,eB,eC,eD,eE,eF,eG,eH,eI,eJ
     print (" - - - Tokens - - -")
     if len(tokens) != 0:
         for x in tokens:

@@ -1,3 +1,5 @@
+// PATHL: /home/rau/Escritorio/
+// PATHW: c:\usuarios\user\documents\output\js\
 // linea nueva 2
 var edad = 18;
 if(edad >= 18) {
@@ -23,8 +25,8 @@ break;
 break;
 }
 }
-retu/rn EXPRESIÓN;
-return false;
+retu@@rn EXPRESIÓN;
+/return false;
 return x;
 return x + y / 3;
 class Rectangulo {

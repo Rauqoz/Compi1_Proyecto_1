@@ -45,12 +45,11 @@ def _analisis():
 menubar = Menu(root,bg="black",fg="white")
 root.config(menu=menubar)
 #Menu
-menubar.add_command(label="Nuevo")
+# menubar.add_command(label="Nuevo")
 menubar.add_command(label="Abrir",command=_abrir)
 menubar.add_command(label="Guardar")
-menubar.add_command(label="Guardar Como")
 menubar.add_command(label="Ejecutar Analisis",command=_analisis)
-menubar.add_command(label="Reportes")
+# menubar.add_command(label="Reportes")
 menubar.add_command(label="Salir",command=salir)
 
 root.mainloop()

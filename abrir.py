@@ -3,6 +3,7 @@ from tkinter.filedialog import askopenfilename
 import tkinter.scrolledtext as st 
 import tkinter.messagebox as ms
 import lexicoJavascript
+import lexicoHtml
 import subprocess
 import os
 
@@ -28,6 +29,7 @@ def abrir(codigo,errores_t):
         extension_archivo = split_extension[1]
         #leer lineas
         lexicoJavascript.primer_analisis()
+        lexicoHtml.primer_analisis()
         # lexicoJavascript.imprimir()
     root.destroy()
 
@@ -39,10 +41,14 @@ def analisis(codigo,errores_t):
             break
         if extension_archivo == "js":
             lexicoJavascript.lexicoJavascript(linea)
+        elif extension_archivo == 'html':
+            lexicoHtml.lexicoHtml(linea)
     archivo.close()
     archivo = ""
     if extension_archivo == "js":
         pintar_js(codigo,errores_t)
+    elif extension_archivo == "html":
+        pintar_html(codigo,errores_t)
 
 def pintar_js(codigo,errores_t):
     if len(lexicoJavascript.tokens) != 0:
@@ -63,6 +69,21 @@ def pintar_js(codigo,errores_t):
             errores_t.insert(INSERT, x.palabra + "\t" + str(x.fila) + "\t" + str(x.columna) + "\n", "normal")
             errores_t.tag_config("normal", foreground="white") 
     crear_dot()
+
+def pintar_html(codigo,errores_t):
+    if len(lexicoHtml.tokens) != 0:
+        for x in lexicoHtml.tokens:
+            codigo.insert(INSERT, x.palabra, "\"" + x.tipo + "\"")
+            codigo.tag_config("etiqueta", foreground="red") 
+            codigo.tag_config("id" ,foreground="green") 
+            codigo.tag_config("cadena", foreground="yellow") 
+            codigo.tag_config("texto", foreground="black") 
+    if len(lexicoHtml.errores) != 0:
+        errores_t.insert(INSERT, "Error\tFila\tColumna\n" , "normal")
+        for x in lexicoHtml.errores:
+            errores_t.insert(INSERT, x.palabra + "\t" + str(x.fila) + "\t" + str(x.columna) + "\n", "normal")
+            errores_t.tag_config("normal", foreground="white") 
+    # lexicoHtml.imprimir()
 
 def crear_dot():
     global rutadot, rutapng, rutanuevo,rutaerrores
@@ -147,4 +168,4 @@ def crear_dot():
                 for x in lexicoJavascript.errores:
                     i+=1
                     file.write("\n<tr align=center> <td><font color ='white'> " + str(i) + " </td> <td><font color ='white'> " + str(x.fila) + " </td> <td><font color ='white'> " + str(x.columna) + " </td> <td><font color ='white'> " + x.palabra + " </td> <td><font color ='white'> Signo Error </td></tr>")
-
+    

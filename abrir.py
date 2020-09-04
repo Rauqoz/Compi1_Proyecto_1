@@ -10,6 +10,8 @@ archivo = ""
 extension_archivo = ""
 rutadot = ""
 rutapng = ""
+rutanuevo = ""
+rutaerrores = ""
 
 def abrir(codigo,errores_t):
     codigo.delete(1.0,END)
@@ -63,7 +65,7 @@ def pintar_js(codigo,errores_t):
     crear_dot()
 
 def crear_dot():
-    global rutadot, rutapng
+    global rutadot, rutapng, rutanuevo,rutaerrores
     rutadot = ""
     rutapng = ""
     if extension_archivo == "js":
@@ -83,6 +85,8 @@ def crear_dot():
                     try:
                         rutadot = parte1 + "graficoJs.dot"
                         rutapng = parte1 + "graficoJs.png"
+                        rutanuevo = parte1 + "corregido.js"
+                        rutaerrores = parte1 + "errores.html"
                         os.makedirs(parte1 , exist_ok=True)
                     except OSError:
                         ms.showinfo(message="Directorio no Creado",title="Error")
@@ -133,3 +137,14 @@ def crear_dot():
                     pass
                 file.write("}")
             subprocess.call("dot -Tpng " + rutadot + " -o " + rutapng, shell=True)
+            with open( rutanuevo ,'w') as file:    
+                for x in lexicoJavascript.tokens:
+                    file.write(x.palabra)
+            with open( rutaerrores ,'w') as file:
+                file.write("<html>" +"<head>" +"</head>" +"<body style='background-color:#34495E'>")
+                file.write("<table border=11 , align='center', bordercolor='orange'>" +"<tr align=center> <th><font color ='white'> Numero </th> <th><font color ='white'> Fila </th> <th><font color ='white'> Columna </th> <th><font color ='white'> Palabra </th> <th><font color ='white'> Error </th></tr>")
+                i = 0
+                for x in lexicoJavascript.errores:
+                    i+=1
+                    file.write("\n<tr align=center> <td><font color ='white'> " + str(i) + " </td> <td><font color ='white'> " + str(x.fila) + " </td> <td><font color ='white'> " + str(x.columna) + " </td> <td><font color ='white'> " + x.palabra + " </td> <td><font color ='white'> Signo Error </td></tr>")
+

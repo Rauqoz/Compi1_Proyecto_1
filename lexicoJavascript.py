@@ -45,6 +45,16 @@ def primer_analisis():
     palabra =""
     i = 0
     estado = 'A'
+    eA = False
+    eB = False
+    eC = False
+    eD = False
+    eE = False
+    eF = False
+    eG = False
+    eH = False
+    eI = False
+    eJ = False
     
 def reservadas_buscar():
     global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal,eA,eB,eC,eD,eE,eF,eG,eH,eI,eJ
@@ -277,6 +287,7 @@ def esta_J():
         palabra += char[i]
         estado = 'H'
     pass
+
 
 def lexicoJavascript(linea):
     global char,tokens,fila,columna,palabra,i,estado,palabrasReservadas,errores,signos,cadena_caracter,comentario,multilinea,decimal,eA,eB,eC,eD,eE,eF,eG,eH,eI,eJ

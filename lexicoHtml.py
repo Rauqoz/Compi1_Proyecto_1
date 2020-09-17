@@ -189,7 +189,7 @@ def lexicoHtml(linea):
     while i<tamaño:
         if tamaño == 0:
             break
-        
+
         if estado == 'A':
            esta_A()
         elif estado == 'B':

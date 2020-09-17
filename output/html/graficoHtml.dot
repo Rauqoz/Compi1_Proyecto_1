@@ -1,0 +1,10 @@
+digraph G {
+node [shape=circle, color=yellow]
+A
+A -> B [label = L]
+B -> B [label = "L|N"]
+C -> D [label = "L|N|S"]
+D -> D [label = "L|N|S"]
+A -> C [label = S]
+D -> E [label = S]
+}

@@ -6,7 +6,7 @@ import abrir
 root = Tk()
 root.config(bg="gray")
 root.title("ML WEB")
-root.geometry('940x415')
+root.geometry('1050x435')
 
 # btn = Button(root, text="Click Me", command=clicked)
 # btn.grid(column=2, row=0)

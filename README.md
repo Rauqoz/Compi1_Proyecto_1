@@ -1,3 +1,3 @@
-# Proyecto_1_Compi1_201503903
+# Proyecto_1_Compi1
 
 Compiladores 1 - Usac
